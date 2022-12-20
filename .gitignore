@@ -25,7 +25,6 @@ package.json
 vue.config.js
 .firebase
 
-
 # local env files
 .env.local
 .env.*.local
