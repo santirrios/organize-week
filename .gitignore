@@ -23,6 +23,7 @@ jsconfig.json
 package-lock.json
 package.json
 vue.config.js
+.firebase
 
 # local env files
 .env.local

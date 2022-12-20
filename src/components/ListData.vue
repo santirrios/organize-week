@@ -52,9 +52,7 @@
                     <label class="d-block text-center">{{ error }}</label>
 
                 </form>
-                <dialog id="modal">
                     <loading class="text-center" :active.sync="isLoading"/>
-                </dialog>
                     
             </div>
         </div>
@@ -90,8 +88,6 @@ export default {
     },
     methods: {
         guardar() {
-            const modal = document.querySelector("#modal");
-            modal.showModal()
             this.isLoading = true;
             let contador = 0;
             this.$store.state.materias.forEach(element => {
@@ -110,7 +106,6 @@ export default {
                         console.log(result)
                         this.error = "";
                         this.isLoading = false;
-                        modal.close()
                     });
 
 
@@ -146,8 +141,6 @@ export default {
 
         },
         borrar(id) {
-            const modal = document.querySelector("#modal");
-            modal.showModal()
             this.isLoading = true;
             const deleteData = httpsCallable(functions, 'deleteData');
             deleteData({
@@ -156,7 +149,6 @@ export default {
                 .then((result) => {
                     console.log(result)
                     this.isLoading = false;
-                    modal.close()
                 });
             /*  try {
                  fetch('/aplication/dbborrar', {
@@ -172,8 +164,3 @@ export default {
     }
 }
 </script>
-<style>
-  #modal{
-    border: 0;
-  }
-</style>
