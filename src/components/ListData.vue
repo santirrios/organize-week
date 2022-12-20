@@ -62,18 +62,9 @@
 </template>
 <script>
 import Loading from 'vue-loading-overlay';
-
-//localhost
-/* import { getApp } from "firebase/app";
-import { getFunctions, connectFunctionsEmulator } from "firebase/functions"; 
-const functions = getFunctions(getApp());
-connectFunctionsEmulator(functions, "localhost", 5001);  */
-
-
 import { functions } from '../firebase.js'
-
-
 import { httpsCallable } from "firebase/functions";
+
 export default {
     name: 'ListData',
     components: {
@@ -112,32 +103,6 @@ export default {
                         this.isLoading = false;
                         modal.close()
                     });
-
-
-                /* try {
-                   fetch('/newData', {
-                       objJson
-                   }).then((response) => {
-                       console.log(response)
-                       this.error=""
-                   })
-               } catch (error) {
-                   console.log("error")
-               }  */
-
-
-
-                /*  try {
-                    fetch('/aplication/db', {
-                        method:'post',
-                        body:objJson
-                    }).then((response) => {
-                        console.log(response)
-                        this.error=""
-                    })
-                } catch (error) {
-                    console.log("error")
-                }   */
             } else {
                 this.error = "ya existe esta hora y dia"
             }
@@ -158,16 +123,6 @@ export default {
                     this.isLoading = false;
                     modal.close()
                 });
-            /*  try {
-                 fetch('/aplication/dbborrar', {
-                     method: 'delete',
-                     body: objJson
-                 }).then((response) => {
-                     console.log(response)
-                 })
-             } catch (err) {
-                 console.log(err)
-             } */
         }
     }
 }
