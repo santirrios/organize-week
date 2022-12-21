@@ -55,7 +55,6 @@
                 <dialog id="modal">
                     <loading class="text-center" :active.sync="isLoading" />
                 </dialog>
-
             </div>
         </div>
     </div>
@@ -101,7 +100,6 @@ export default {
                         console.log(result)
                         this.error = "";
                         this.isLoading = false;
-                        modal.close()
                     });
             } else {
                 this.error = "ya existe esta hora y dia"
@@ -111,8 +109,6 @@ export default {
 
         },
         borrar(id) {
-            const modal = document.querySelector("#modal");
-            modal.showModal()
             this.isLoading = true;
             const deleteData = httpsCallable(functions, 'deleteData');
             deleteData({
@@ -121,7 +117,6 @@ export default {
                 .then((result) => {
                     console.log(result)
                     this.isLoading = false;
-                    modal.close()
                 });
         }
     }
