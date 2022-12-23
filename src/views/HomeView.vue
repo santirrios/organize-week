@@ -9,6 +9,7 @@
         </div>
       </div>
     </div>
+    
   </template>
   <script>
   import ListData from '../components/ListData.vue'

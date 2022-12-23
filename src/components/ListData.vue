@@ -52,8 +52,9 @@
                     <label class="d-block text-center">{{ error }}</label>
 
                 </form>
-                    <loading class="text-center" :active.sync="isLoading"/>
-                    
+                <dialog id="modal">
+                    <loading class="text-center" :active.sync="isLoading" />
+                </dialog>
             </div>
         </div>
     </div>
@@ -79,7 +80,6 @@ export default {
     },
     methods: {
         guardar() {
-            this.isLoading = true;
             let contador = 0;
             this.$store.state.materias.forEach(element => {
                 if (element.dia === this.dia && element.hora === this.hora) {
@@ -87,6 +87,9 @@ export default {
                 }
             });
             if (contador < 1) {
+                const modal = document.querySelector("#modal");
+                modal.showModal()
+                this.isLoading = true;
                 const addData = httpsCallable(functions, 'addData');
                 addData({
                     nombre: this.nombre,
@@ -119,3 +122,8 @@ export default {
     }
 }
 </script>
+<style>
+#modal {
+    border: 0;
+}
+</style>
