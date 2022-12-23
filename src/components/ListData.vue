@@ -98,6 +98,7 @@ export default {
                 })
                     .then((result) => {
                         console.log(result)
+                        modal.close()
                         this.error = "";
                         this.isLoading = false;
                     });
@@ -109,12 +110,15 @@ export default {
 
         },
         borrar(id) {
+            const modal = document.querySelector("#modal");
+            modal.showModal()
             this.isLoading = true;
             const deleteData = httpsCallable(functions, 'deleteData');
             deleteData({
                 id
             })
                 .then((result) => {
+                    modal.close()
                     console.log(result)
                     this.isLoading = false;
                 });
