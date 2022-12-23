@@ -23,11 +23,19 @@ export default {
             }
         },
         viewTable(){
-            const horas=['6-8','8-10','10-12','12-14','14-16','16-18','18-20','20-22']
+            const fechas=[
+                ['6-8','8-10','10-12','12-14','14-16','16-18','18-20','20-22'],
+                ['lunes','martes','miercoles','jueves','viernes','sabado','domingo']
+            ]
+            let obj2={}
             const array = []
-            horas.forEach(hora=>{
-                    let obj={hora:hora,lunes:this.checkdata('lunes',hora),martes:this.checkdata('martes',hora),miercoles:this.checkdata('miercoles',hora),jueves: this.checkdata('jueves', hora), viernes: this.checkdata('viernes', hora), sabado: this.checkdata('sabado', hora), domingo: this.checkdata('domingo', hora)}
-                    array.push(obj)
+            fechas[0].forEach(hora=>{
+                fechas[1].forEach(dia=>{
+                    let obj1={hora,[dia]:this.checkdata(dia,hora)}
+                    obj2= Object.assign(obj2,obj1)
+                })
+                array.push(obj2)
+                obj2={}
             })
             return array
         }
