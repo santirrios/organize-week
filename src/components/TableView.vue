@@ -27,17 +27,17 @@ export default {
                 ['6-8','8-10','10-12','12-14','14-16','16-18','18-20','20-22'],
                 ['lunes','martes','miercoles','jueves','viernes','sabado','domingo']
             ]
-            let obj2={}
-            const array = []
+            let objHoras={}
+            let arrayFechasTotal = []
             fechas[0].forEach(hora=>{
                 fechas[1].forEach(dia=>{
-                    let obj1={hora,[dia]:this.checkdata(dia,hora)}
-                    obj2= Object.assign(obj2,obj1)
+                    let objDias={hora,[dia]:this.checkdata(dia,hora)}
+                    objHoras= Object.assign(objHoras,objDias)
                 })
-                array.push(obj2)
-                obj2={}
+                arrayFechasTotal.push(objHoras)
+                objHoras={}
             })
-            return array
+            return arrayFechasTotal
         }
     }
 }
