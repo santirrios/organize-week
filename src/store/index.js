@@ -7,14 +7,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: "",
-    materias: []
+    materias: [],
+    records:[]
   },
   getters: {
   },
   mutations: {
     reloadData(state) {
-      const q = query(collection(db, state.user.uid));
-      onSnapshot(q, (querySnapshot) => {
+      const q1 = query(collection(db, 'users',state.user.uid,'materias'));
+      onSnapshot(q1, (querySnapshot) => {
         state.materias=[];
         querySnapshot.forEach((doc) => {
           console.log("nuevo")
@@ -29,21 +30,34 @@ export default new Vuex.Store({
         });
       });
 
-      /* let obtenerProductos =(callback)=> onSnapshot(collection(db,state.user.uid),callback);
-      obtenerProductos(querySnapshot=>{
-        state.materias=[];
-        querySnapshot.forEach(doc => {
-          console.log("viejo")
-          let obj = {
-            id:doc.id,
-            nombre:doc.data().nombre,
-            dia:doc.data().dia,
-            hora:doc.data().hora
-          }
-          state.materias.push(obj)
-          
+
+      const q2 = query(collection(db, 'users',state.user.uid,'records'));
+      onSnapshot(q2, (querySnapshot) => {
+        state.records=[];
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data().date.toDate())
+          state.records.push(
+            {
+              id: doc.id,
+              nombre: doc.data().nombre,
+              dia: doc.data().dia,
+              hora: doc.data().hora,
+              estado: doc.data().estado,
+              date:doc.data().date.toDate()
+            }
+            
+          );
         });
-      }) */
+      });
+      state.records.sort((a, b) => {
+        if (a.date < b.date) {
+            return 1
+        }
+        if (a.date > b.date) {
+            return -1
+        }
+        return 0
+    })
     }
   },
   actions: {
