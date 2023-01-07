@@ -10,7 +10,7 @@
             </div>
             <div class="col">
                 <div class="float-right mt-auto mr-5">
-                    <strong> buscar</strong> <br><input type="text" v-model="busqueda">
+                    <strong> buscar</strong> <br><input type="text" v-model="searched">
                 </div>
             </div>
         </div>
@@ -23,12 +23,9 @@
                     {{ record.date }} <strong>||</strong> {{ record.estado }} </p>
             </b-list-group-item>
         </b-list-group>
-
         <button class="btn btn-secondary d-inline ml-1" v-on:click.prevent="beforePage()">Previous page</button>
         <button class="btn btn-primary d-inline ml-1" v-on:click.prevent="nextPage()">Next page</button>
-        <h3>PAGINA: {{ pagina }}</h3>
-
-
+        <h3>PAGINA: {{ page }}</h3>
     </div>
 </template>
 <script>
@@ -37,17 +34,17 @@ export default {
         return {
             list: [],
             listSearch: [],
-            tipoOrdenFecha: true,
-            busqueda: "",
-            listado: 0,
-            listadoDespues: 5,
-            pagina:1
+            orderDate: true,
+            searched: "",
+            startList: 0,
+            endList: 5,
+            page: 1
         }
     },
     methods: {
         ordenarPorFechaCambiar() {
-            if (this.tipoOrdenFecha === true) {
-                this.tipoOrdenFecha = !this.tipoOrdenFecha
+            if (this.orderDate === true) {
+                this.orderDate = !this.orderDate
                 this.$store.state.records.sort((a, b) => {
                     if (a.date < b.date) {
                         return -1
@@ -58,12 +55,12 @@ export default {
                     return 0
                 })
                 if (this.$store.state.records.length >= 5) {
-                    this.list = this.$store.state.records.slice(this.listado, this.listadoDespues)
+                    this.list = this.$store.state.records.slice(this.startList, this.endList)
                 } else {
                     this.list = this.$store.state.records
                 }
             } else {
-                this.tipoOrdenFecha = !this.tipoOrdenFecha
+                this.orderDate = !this.orderDate
                 this.$store.state.records.sort((a, b) => {
                     if (a.date < b.date) {
                         return 1
@@ -74,7 +71,7 @@ export default {
                     return 0
                 })
                 if (this.$store.state.records.length >= 5) {
-                    this.list = this.$store.state.records.slice(this.listado, this.listadoDespues)
+                    this.list = this.$store.state.records.slice(this.startList, this.endList)
                 } else {
                     this.list = this.$store.state.records
                 }
@@ -82,13 +79,13 @@ export default {
         },
         nextPage() {
             if (this.$store.state.records.length >= 5) {
-                if (this.$store.state.records.length > this.listado+this.list.length) {
-                    this.listado += 5
-                    this.listadoDespues += 5
-                    console.log(this.listado)
-                    console.log(this.listadoDespues)
-                    this.list = this.$store.state.records.slice(this.listado, this.listadoDespues)
-                    this.pagina++
+                if (this.$store.state.records.length > this.startList + this.list.length) {
+                    this.startList += 5
+                    this.endList += 5
+                    console.log(this.startList)
+                    console.log(this.endList)
+                    this.list = this.$store.state.records.slice(this.startList, this.endList)
+                    this.page++
                 }
             } else {
                 this.list = this.$store.state.records
@@ -96,13 +93,13 @@ export default {
         },
         beforePage() {
             if (this.$store.state.records.length >= 5) {
-                if (this.listado >= 5) {
-                    this.listado -= 5
-                    this.listadoDespues -= 5
-                    console.log(this.listado)
-                    console.log(this.listadoDespues)
-                    this.list = this.$store.state.records.slice(this.listado, this.listadoDespues)
-                    this.pagina--
+                if (this.startList >= 5) {
+                    this.startList -= 5
+                    this.endList -= 5
+                    console.log(this.startList)
+                    console.log(this.endList)
+                    this.list = this.$store.state.records.slice(this.startList, this.endList)
+                    this.page--
                 }
             } else {
                 this.list = this.$store.state.records
@@ -111,15 +108,15 @@ export default {
     },
     computed: {
         verificarNombre() {
-            if (this.busqueda !== "") {
+            if (this.searched !== "") {
                 let array = []
                 this.$store.state.records.forEach(item => {
-                    if (item.nombre.indexOf(this.busqueda) !== -1) {
+                    if (item.nombre.indexOf(this.searched) !== -1) {
                         array.push(item)
                     }
                 })
                 return array
-            }else{
+            } else {
                 return this.list
             }
         }
@@ -135,7 +132,7 @@ export default {
             return 0
         })
         if (this.$store.state.records.length >= 5) {
-            this.list = this.$store.state.records.slice(this.listado, this.listadoDespues)
+            this.list = this.$store.state.records.slice(this.startList, this.endList)
         } else {
             this.list = this.$store.state.records
         }
