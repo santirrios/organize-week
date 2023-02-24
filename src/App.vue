@@ -1,11 +1,21 @@
 <template>
   <div id="app">
-    <nav class="nav bg-dark">
-      <router-link class="nav-link text-white" v-if="this.$store.state.user" to="/">Home</router-link>
-      <router-link class="nav-link text-white" v-if="!this.$store.state.user" to="/logup">Registrarse</router-link>
-      <router-link class="nav-link text-white" v-if="!this.$store.state.user" to="/login">Iniciar sesion</router-link>
-      <a v-on:click.prevent="logout" class="nav-link text-white" v-if="this.$store.state.user" href="">Cerrar sesion</a>
-    </nav>
+    <div>
+      <b-navbar toggleable="lg" type="dark" variant="dark">
+        <b-navbar-brand href="#">Organize week</b-navbar-brand>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav>
+            <b-nav-item v-if="this.$store.state.user" to="/">Home</b-nav-item>
+            <b-nav-item v-if="this.$store.state.user" to="/records">Registro</b-nav-item>
+            <b-nav-item v-if="!this.$store.state.user" to="/logup">Registrarse</b-nav-item>
+            <b-nav-item v-if="!this.$store.state.user" to="/login">Iniciar sesion</b-nav-item>
+            <b-nav-item v-on:click.prevent="logout" v-if="this.$store.state.user" href="login">Cerrar
+              sesion</b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
+    </div>
     <router-view />
   </div>
 </template>
@@ -17,6 +27,7 @@ export default {
   methods: {
     logout() {
       auth.signOut().then(() => {
+        this.$store.dispatch('unsuscribeAction')
         this.$store.state.user = ""
         console.log("user signed out")
         this.$router.push('/login')

@@ -4,7 +4,7 @@
             <ul class="list-group">
                 <li class="list-group-item" v-for="(item, index) in this.$store.state.materias" :key="index">
                     <p>NOMBRE MATERIA: {{ item.nombre }} || HORARIO: {{ item.dia }} {{ item.hora }} </p> <button
-                        class="btn btn-danger" v-on:click="borrar(item.id)">Borrar</button>
+                        class="btn btn-danger" v-on:click="borrar(item)">Borrar</button>
                 </li>
             </ul>
             {{ this.$store.state.materias.count }}
@@ -96,12 +96,21 @@ export default {
                     dia: this.dia,
                     hora: this.hora
                 })
-                    .then((result) => {
-                        console.log(result)
+                    .then(() => {
+
+                    });
+                const recordsAdd = httpsCallable(functions, 'recordsAdd');
+                recordsAdd({
+                    nombre: this.nombre,
+                    dia: this.dia,
+                    hora: this.hora
+                })
+                    .then(() => {
                         modal.close()
                         this.error = "";
                         this.isLoading = false;
-                    });
+                    })
+
             } else {
                 this.error = "ya existe esta hora y dia"
             }
@@ -109,19 +118,27 @@ export default {
 
 
         },
-        borrar(id) {
+        borrar(item) {
             const modal = document.querySelector("#modal");
             modal.showModal()
             this.isLoading = true;
             const deleteData = httpsCallable(functions, 'deleteData');
             deleteData({
-                id
+                id:item.id
             })
-                .then((result) => {
-                    modal.close()
-                    console.log(result)
-                    this.isLoading = false;
+                .then(() => {
                 });
+            const recordsDelete = httpsCallable(functions, 'recordsDelete');
+            recordsDelete({
+                nombre: item.nombre,
+                dia: item.dia,
+                hora: item.hora
+            })
+                .then(() => {
+                    modal.close()
+                    this.error = "";
+                    this.isLoading = false;
+                })
         }
     }
 }
@@ -129,5 +146,6 @@ export default {
 <style>
 #modal {
     border: 0;
+    background: none;
 }
 </style>
